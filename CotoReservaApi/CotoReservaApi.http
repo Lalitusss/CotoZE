@@ -1,0 +1,6 @@
+@CotoReservaApi_HostAddress = http://localhost:5071
+
+GET {{CotoReservaApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
