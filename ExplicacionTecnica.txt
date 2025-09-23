@@ -1,51 +1,90 @@
----------BACKEND---------
-API REST:
-3 apis
--POST (crea una reserva)
--GET (obtiene todas las reservas)
--GET/fecha (obtiene la reserva por fecha)
 
-Contiene:
--Controlador
--Servicios
--Modelos
--Dockerfile
+***
 
----------FRONTEND---------
-Vista
-Js
-Dockerfile
+## Descripción técnica del proyecto
 
------------TEST-----------
-Clase de Test
-Implementado 5 casos.
-2 fallan
+### Backend - API REST
 
+El backend está desarrollado como una API REST con tres endpoints principales:
 
-------------------------------------------------------------------
-La APP es una Single Page que muestra la grilla de "Reservas", con un boton de creación.
-Se valida cada uno de los inputs, recien nos va a permitir cargar.
-Desde el backend se crea una Lista en "Memoria", que simula de datos (base de datos), esto se mantiene o persiste solo cuando corre
-la aplicación.
-Dentro del Backend valida los solicitado, fechas, reservas, y sobre-reservas.
-------------------------------------------------------------------
+- **POST /reservas**: Endpoint para crear una nueva reserva.
+- **GET /reservas**: Obtiene la lista completa de reservas.
+- **GET /reservas/{fecha}**: Recupera las reservas de una fecha específica.
 
+El backend está estructurado en capas para una mejor organización y mantenimiento del código:
 
-Para crear un POST desde Swagger:
+- **Controladores**: Gestionan las solicitudes y respuestas HTTP, validando datos de entrada y direccionando la lógica.
+- **Servicios**: Contienen la lógica de negocio, incluyendo validaciones de campos, manejo de conflictos y gestión de listas en memoria.
+- **Modelos**: Definen las entidades y estructuras de datos utilizadas en la aplicación.
 
-{"salonId": 2,
+ `Program.cs` configura el backend para que funcione correctamente con un frontend React local, ofrezca documentación Swagger accesible, y maneje CORS y la seguridad básica para HTTPS y autorización.
+
+Para simplificar el desarrollo, la persistencia de datos se simula con una lista en memoria que almacena las reservas mientras la aplicación está en ejecución, sin acceso a base de datos externa.
+
+El backend también incluye un Dockerfile configurado para construir y publicar la API en un contenedor Docker, escuchando en el puerto 8080.
+
+Se utilizaron patrones de diseño y principios SOLID.
+-Inyección de Dependencias
+-Singleton
+
+-S.D.O.
+***
+
+### Frontend - Aplicación React
+
+La capa frontend es una Single Page Application (SPA) desarrollada en React, que ofrece una interfaz intuitiva para gestionar reservas:
+
+- Muestra una grilla con las reservas actuales.
+- Dispone de un botón para la creación de nuevas reservas.
+- Realiza validaciones de todos los campos en el formulario antes de permitir la creación.
+
+El frontend también cuenta con un Dockerfile multi-etapa que compila la aplicación mediante Node.js y la sirve con Nginx en un contenedor Docker, exponiendo el puerto 80.
+
+***
+
+### Tests
+
+Se desarrolló una clase de pruebas unitarias con 5 casos de prueba implementados, de los cuales 2 presentan fallos actualmente. Esto ayuda a garantizar la calidad del código y detectar errores en la lógica de negocio.
+
+***
+
+### Funcionamiento general
+
+La aplicación permite gestionar reservas validando entradas y evitando reservas duplicadas o solapadas. Los datos residen en una lista en memoria en el backend, que simula el almacenamiento temporal de las reservas mientras la aplicación está en ejecución.
+
+***
+
+### Ejemplo de uso para crear una reserva (Swagger)
+
+Petición POST con payload JSON:
+
+```json
+{
+  "salonId": 2,
   "nombreCliente": "Juan Perez",
   "fecha": "2025-09-22T00:00:00Z",
   "horaInicio": "10:00:00",
   "horaFin": "12:00:00"
 }
+```
 
-Si queremos crear de forma manual uno por uno. (En este caso tenemos YAML, no seria necesario)
+***
 
---.NET
+### Comandos para construir y ejecutar los contenedores Docker
+
+**Backend (.NET):**
+
+```bash
 docker build -t cotoapi .
 docker run -d -p 7029:8080 --name cotoapi_container cotoapi
+```
 
---REACT
+**Frontend (React):**
+
+```bash
 docker build -t cotofront .
 docker run -d -p 3000:80 --name cotofront_container cotofront
+```
+
+***
+
