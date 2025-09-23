@@ -43,10 +43,14 @@ La forma más sencilla de ejecutar la aplicación completa es usando Docker Comp
 
 1.  Abre la terminal en la **raíz del proyecto** (donde se encuentra el archivo `docker-compose.yml`).
 
-2.  Ejecuta el siguiente comando para construir las imágenes e iniciar los contenedores en segundo plano:
+2.  Ejecuta el siguiente comando para construir las imágenes y levantar los contenedores:
 
     ```bash
-    docker compose up -d
+	docker compose up --build
+    ```
+	Si quieres iniciar los contenedores en segundo plano (modo detached), ejecuta:
+	```bash
+	docker compose up -d
     ```
 
 3.  Una vez que los contenedores estén levantados, la API estará disponible en `http://localhost:7029` y la aplicación React en `http://localhost:3000`.
