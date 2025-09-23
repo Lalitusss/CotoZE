@@ -19,12 +19,29 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ReservaService>();
 
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
+// Middleware para redirigir la raíz "/" a "/swagger/index.html"
+app.Use(async (context, next) =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    if (context.Request.Path == "/")
+    {
+        context.Response.Redirect("/swagger/index.html");
+        return;
+    }
+    await next();
+});
+
+//Comento para que funcione en Docker
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
+app.UseSwagger();
+//app.UseSwaggerUI();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("../swagger/v1/swagger.json", "DemoAPI v1");
+});
 
 app.UseHttpsRedirection();
 

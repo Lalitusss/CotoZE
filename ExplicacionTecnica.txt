@@ -1,0 +1,51 @@
+---------BACKEND---------
+API REST:
+3 apis
+-POST (crea una reserva)
+-GET (obtiene todas las reservas)
+-GET/fecha (obtiene la reserva por fecha)
+
+Contiene:
+-Controlador
+-Servicios
+-Modelos
+-Dockerfile
+
+---------FRONTEND---------
+Vista
+Js
+Dockerfile
+
+-----------TEST-----------
+Clase de Test
+Implementado 5 casos.
+2 fallan
+
+
+------------------------------------------------------------------
+La APP es una Single Page que muestra la grilla de "Reservas", con un boton de creación.
+Se valida cada uno de los inputs, recien nos va a permitir cargar.
+Desde el backend se crea una Lista en "Memoria", que simula de datos (base de datos), esto se mantiene o persiste solo cuando corre
+la aplicación.
+Dentro del Backend valida los solicitado, fechas, reservas, y sobre-reservas.
+------------------------------------------------------------------
+
+
+Para crear un POST desde Swagger:
+
+{"salonId": 2,
+  "nombreCliente": "Juan Perez",
+  "fecha": "2025-09-22T00:00:00Z",
+  "horaInicio": "10:00:00",
+  "horaFin": "12:00:00"
+}
+
+Si queremos crear de forma manual uno por uno. (En este caso tenemos YAML, no seria necesario)
+
+--.NET
+docker build -t cotoapi .
+docker run -d -p 7029:8080 --name cotoapi_container cotoapi
+
+--REACT
+docker build -t cotofront .
+docker run -d -p 3000:80 --name cotofront_container cotofront

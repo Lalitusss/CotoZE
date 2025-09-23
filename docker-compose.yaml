@@ -1,0 +1,24 @@
+services:
+  cotoapi:
+    build:
+      context: ./CotoReservaApi
+      dockerfile: Dockerfile
+    container_name: cotoapi_container
+    restart: unless-stopped
+    ports:
+      - "7029:8080"
+    environment:
+      # Pasa tus variables de entorno aquí
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=tu_cadena_de_conexion
+    
+  cotofront:
+    build:
+      context: ./CotoReservaApi.FE/cotoreserva
+      dockerfile: Dockerfile
+    container_name: cotofront_container
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - cotoapi
